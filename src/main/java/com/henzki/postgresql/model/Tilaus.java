@@ -1,11 +1,9 @@
 package com.henzki.postgresql.model;
-import lombok.Data;
 
 import java.time.LocalDate;
-
 import jakarta.persistence.*;
 
-@Data
+
 @Entity
 @Table(name = "Tilaus")
 public class Tilaus {
@@ -26,4 +24,57 @@ public class Tilaus {
 
     @Column(name = "tila", nullable = false)
     private String tila;
+    
+    public Tilaus() {
+		super();
+	}
+
+	public Tilaus(Asiakas asiakas, LocalDate tilauspaiva, LocalDate toimituspaiva, String tila) {
+		super();
+		this.asiakas = asiakas;
+		this.tilauspaiva = tilauspaiva;
+		this.toimituspaiva = toimituspaiva;
+		this.tila = tila;
+	}
+
+	public Long getTilaus_id() {
+		return tilaus_id;
+	}
+
+	public void setTilaus_id(Long tilaus_id) {
+		this.tilaus_id = tilaus_id;
+	}
+
+	public Asiakas getAsiakas() {
+		return asiakas;
+	}
+
+	public void setAsiakas(Asiakas asiakas) {
+		this.asiakas = asiakas;
+	}
+
+	public LocalDate getTilauspaiva() {
+		return tilauspaiva;
+	}
+
+	public void setTilauspaiva(LocalDate tilauspaiva) {
+		this.tilauspaiva = tilauspaiva;
+	}
+
+	public LocalDate getToimituspaiva() {
+		return toimituspaiva;
+	}
+
+	public void setToimituspaiva(LocalDate toimituspaiva) {
+		this.toimituspaiva = toimituspaiva;
+	}
+
+	public String getTila() {
+		return tila;
+	}
+
+	public void setTila(String tila) {
+		this.tila = tila;
+	}
+    
 }
