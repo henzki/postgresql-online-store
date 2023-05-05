@@ -1,4 +1,4 @@
-package com.henzki.postgresqlonlinestore;
+package com.henzki.postgresql;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
