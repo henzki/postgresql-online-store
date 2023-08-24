@@ -14,9 +14,15 @@ public class Tilausrivi {
     @JoinColumn(name = "tilaus_id", nullable = false)
     private Tilaus tilaus;
 
+	@Column(nullable = false, insertable = false, updatable = false)
+	private Long tilaus_id;
+
     @ManyToOne
     @JoinColumn(name = "tuote_id", nullable = false)
     private Tuote tuote;
+
+	@Column(nullable = false, insertable = false, updatable = false)
+	private Long tuote_id;
 
     @Column(nullable = false)
     private Integer maara;
@@ -62,6 +68,28 @@ public class Tilausrivi {
 
 	public void setMaara(Integer maara) {
 		this.maara = maara;
+	}
+
+	public Long getTilaus_id() {
+		if (tilaus != null) {
+			return tilaus.getTilaus_id();
+		}
+		return null;
+	}
+
+	public void setTilaus_id(Long tilaus_id) {
+		this.tilaus_id = tilaus_id;
+	}
+
+	public Long getTuote_id() {
+		if (tuote != null) {
+			return tuote.getTuote_id();
+		}
+		return null;
+	}
+
+	public void setTuote_id(Long tuote_id) {
+		this.tuote_id = tuote_id;
 	}
     
 }

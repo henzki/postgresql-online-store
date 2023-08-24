@@ -2,7 +2,12 @@ package com.henzki.postgresql.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.henzki.postgresql.dto.TuoteDTO;
+import com.henzki.postgresql.mapper.AsiakasMapper;
+import com.henzki.postgresql.mapper.TuoteMapper;
+import com.henzki.postgresql.model.Asiakas;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,24 +24,31 @@ public class TuoteService {
         this.tuRepository = tuoteRepository;
     }
     
-    public List<Tuote> haeKaikkiTuotteet() {
-        return tuRepository.findAll();
+    public List<TuoteDTO> haeKaikkiTuotteet() {
+        List<Tuote> tuotteet = tuRepository.findAll();
+        return tuotteet.stream()
+                .map(TuoteMapper::mapToDTO)
+                .collect(Collectors.toList());
     }
 
-    public Tuote haeTuote(Long id) {
+    public TuoteDTO haeTuote(Long id) {
         Optional<Tuote> optionalTilaus = tuRepository.findById(id);
-        return optionalTilaus.orElse(null);
+        return optionalTilaus.map(TuoteMapper::mapToDTO).orElse(null);
     }
 
-    public Tuote lisaaTuote(Tuote tuote) {
-        return tuRepository.save(tuote);
+    public TuoteDTO lisaaTuote(TuoteDTO tuoteDTO) {
+        Tuote tuote = TuoteMapper.mapToEntity(tuoteDTO);
+        tuote = tuRepository.save(tuote);
+        return TuoteMapper.mapToDTO(tuote);
     }
 
-    public Tuote paivitaTuote(Long id, Tuote tuote) {
+    public TuoteDTO paivitaTuote(Long id, TuoteDTO tuoteDTO) {
         Optional<Tuote> optionalTuote = tuRepository.findById(id);
         if (optionalTuote.isPresent()) {
-        	tuote.setTuote_id(id);
-            return tuRepository.save(tuote);
+            Tuote tuote = TuoteMapper.mapToEntity(tuoteDTO);
+            tuote.setTuote_id(id);
+            tuote = tuRepository.save(tuote);
+            return TuoteMapper.mapToDTO(tuote);
         } else {
             return null;
         }

@@ -2,6 +2,7 @@ package com.henzki.postgresql.controller;
 
 import java.util.List;
 
+import com.henzki.postgresql.dto.TilausriviDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,29 +26,29 @@ public class TilausriviController {
 	private TilausriviService tiriService;
 	
 	@GetMapping
-	public List<Tilausrivi> haeKaikkiTilausrivit() {
+	public List<TilausriviDTO> haeKaikkiTilausrivit() {
 	    return tiriService.haeKaikkiTilausrivit();
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Tilausrivi> haeTilausrivi(@PathVariable("id") Long id) {
-		Tilausrivi tilausrivi = tiriService.haeTilausrivi(id);
-	    if (tilausrivi == null) {
+	public ResponseEntity<TilausriviDTO> haeTilausrivi(@PathVariable("id") Long id) {
+		TilausriviDTO tilausriviDTO = tiriService.haeTilausrivi(id);
+	    if (tilausriviDTO == null) {
 	        return ResponseEntity.notFound().build();
 	    } else {
-	        return ResponseEntity.ok(tilausrivi);
+	        return ResponseEntity.ok(tilausriviDTO);
 	    }
 	}
 
 	@PostMapping
-	public ResponseEntity<Tilausrivi> lisaaTilausrivi(@RequestBody Tilausrivi tilausrivi) {
-		Tilausrivi uusiTilausrivi = tiriService.lisaaTilausrivi(tilausrivi);
+	public ResponseEntity<TilausriviDTO> lisaaTilausrivi(@RequestBody TilausriviDTO tilausriviDTO) {
+		TilausriviDTO uusiTilausrivi = tiriService.lisaaTilausrivi(tilausriviDTO);
 	    return ResponseEntity.status(HttpStatus.CREATED).body(uusiTilausrivi);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Tilausrivi> paivitaTilausrivi(@PathVariable("id") Long id, @RequestBody Tilausrivi tilausrivi) {
-		Tilausrivi paivitettyTilausrivi = tiriService.paivitaTilausrivi(id, tilausrivi);
+	public ResponseEntity<TilausriviDTO> paivitaTilausrivi(@PathVariable("id") Long id, @RequestBody TilausriviDTO tilausriviDTO) {
+		TilausriviDTO paivitettyTilausrivi = tiriService.paivitaTilausrivi(id, tilausriviDTO);
 	    if (paivitettyTilausrivi == null) {
 	        return ResponseEntity.notFound().build();
 	    } else {

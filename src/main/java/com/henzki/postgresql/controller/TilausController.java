@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.henzki.postgresql.dto.TilausDTO;
 import com.henzki.postgresql.model.Tilaus;
 import com.henzki.postgresql.service.TilausService;
 
@@ -25,29 +26,29 @@ public class TilausController {
 	private TilausService tiService;
 	
 	@GetMapping
-	public List<Tilaus> haeKaikkiTilaukset() {
+	public List<TilausDTO> haeKaikkiTilaukset() {
 	    return tiService.haeKaikkiTilaukset();
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Tilaus> haeTilaus(@PathVariable("id") Long id) {
-		Tilaus tilaus = tiService.haeTilaus(id);
-	    if (tilaus == null) {
+	public ResponseEntity<TilausDTO> haeTilaus(@PathVariable("id") Long id) {
+		TilausDTO tilausDTO = tiService.haeTilaus(id);
+	    if (tilausDTO == null) {
 	        return ResponseEntity.notFound().build();
 	    } else {
-	        return ResponseEntity.ok(tilaus);
+	        return ResponseEntity.ok(tilausDTO);
 	    }
 	}
 
 	@PostMapping
-	public ResponseEntity<Tilaus> lisaaTilaus(@RequestBody Tilaus tilaus) {
-		Tilaus uusiTilaus = tiService.lisaaTilaus(tilaus);
+	public ResponseEntity<TilausDTO> lisaaTilaus(@RequestBody TilausDTO tilausDTO) {
+		TilausDTO uusiTilaus = tiService.lisaaTilaus(tilausDTO);
 	    return ResponseEntity.status(HttpStatus.CREATED).body(uusiTilaus);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Tilaus> paivitaTilaus(@PathVariable("id") Long id, @RequestBody Tilaus tilaus) {
-	    Tilaus paivitettyTilaus = tiService.paivitaTilaus(id, tilaus);
+	public ResponseEntity<TilausDTO> paivitaTilaus(@PathVariable("id") Long id, @RequestBody TilausDTO tilausDTO) {
+	    TilausDTO paivitettyTilaus = tiService.paivitaTilaus(id, tilausDTO);
 	    if (paivitettyTilaus == null) {
 	        return ResponseEntity.notFound().build();
 	    } else {

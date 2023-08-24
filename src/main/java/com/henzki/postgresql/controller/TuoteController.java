@@ -2,6 +2,7 @@ package com.henzki.postgresql.controller;
 
 import java.util.List;
 
+import com.henzki.postgresql.dto.TuoteDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,29 +26,29 @@ public class TuoteController {
 	private TuoteService tuService;
 	
 	@GetMapping
-	public List<Tuote> haeKaikkiTuotteet() {
+	public List<TuoteDTO> haeKaikkiTuotteet() {
 	    return tuService.haeKaikkiTuotteet();
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Tuote> haeTuote(@PathVariable("id") Long id) {
-		Tuote tuote = tuService.haeTuote(id);
-	    if (tuote == null) {
+	public ResponseEntity<TuoteDTO> haeTuote(@PathVariable("id") Long id) {
+		TuoteDTO tuoteDTO = tuService.haeTuote(id);
+	    if (tuoteDTO == null) {
 	        return ResponseEntity.notFound().build();
 	    } else {
-	        return ResponseEntity.ok(tuote);
+	        return ResponseEntity.ok(tuoteDTO);
 	    }
 	}
 
 	@PostMapping
-	public ResponseEntity<Tuote> lisaaTuote(@RequestBody Tuote tuote) {
-		Tuote uusiTuote = tuService.lisaaTuote(tuote);
+	public ResponseEntity<TuoteDTO> lisaaTuote(@RequestBody TuoteDTO tuoteDTO) {
+		TuoteDTO uusiTuote = tuService.lisaaTuote(tuoteDTO);
 	    return ResponseEntity.status(HttpStatus.CREATED).body(uusiTuote);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Tuote> paivitaTuote(@PathVariable("id") Long id, @RequestBody Tuote tuote) {
-		Tuote paivitettyTuote = tuService.paivitaTuote(id, tuote);
+	public ResponseEntity<TuoteDTO> paivitaTuote(@PathVariable("id") Long id, @RequestBody TuoteDTO tuoteDTO) {
+		TuoteDTO paivitettyTuote = tuService.paivitaTuote(id, tuoteDTO);
 	    if (paivitettyTuote == null) {
 	        return ResponseEntity.notFound().build();
 	    } else {
