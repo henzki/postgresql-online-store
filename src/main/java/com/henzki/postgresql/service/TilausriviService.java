@@ -2,7 +2,11 @@ package com.henzki.postgresql.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.henzki.postgresql.dto.TilausriviDTO;
+import com.henzki.postgresql.mapper.TilausMapper;
+import com.henzki.postgresql.mapper.TilausriviMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,24 +23,31 @@ public class TilausriviService {
         this.tiriRepository = tilausriviRepository;
     }
     
-    public List<Tilausrivi> haeKaikkiTilausrivit() {
-        return tiriRepository.findAll();
+    public List<TilausriviDTO> haeKaikkiTilausrivit() {
+        List<Tilausrivi> tilausrivit = tiriRepository.findAll();
+        return tilausrivit.stream()
+                .map(TilausriviMapper::mapToDTO)
+                .collect(Collectors.toList());
     }
 
-    public Tilausrivi haeTilausrivi(Long id) {
+    public TilausriviDTO haeTilausrivi(Long id) {
         Optional<Tilausrivi> optionalTilausrivi = tiriRepository.findById(id);
-        return optionalTilausrivi.orElse(null);
+        return optionalTilausrivi.map(TilausriviMapper::mapToDTO).orElse(null);
     }
 
-    public Tilausrivi lisaaTilausrivi(Tilausrivi tilausrivi) {
-        return tiriRepository.save(tilausrivi);
+    public TilausriviDTO lisaaTilausrivi(TilausriviDTO tilausDTO) {
+        Tilausrivi tilausrivi = TilausriviMapper.mapToEntity(tilausDTO);
+        tilausrivi = tiriRepository.save(tilausrivi);
+        return TilausriviMapper.mapToDTO(tilausrivi);
     }
 
-    public Tilausrivi paivitaTilausrivi(Long id, Tilausrivi tilausrivi) {
+    public TilausriviDTO paivitaTilausrivi(Long id, TilausriviDTO tilausriviDTO) {
         Optional<Tilausrivi> optionalTilausrivi = tiriRepository.findById(id);
         if (optionalTilausrivi.isPresent()) {
+            Tilausrivi tilausrivi = TilausriviMapper.mapToEntity(tilausriviDTO);
         	tilausrivi.setTilausrivi_id(id);
-            return tiriRepository.save(tilausrivi);
+            tilausrivi = tiriRepository.save(tilausrivi);
+            return TilausriviMapper.mapToDTO(tilausrivi);
         } else {
             return null;
         }

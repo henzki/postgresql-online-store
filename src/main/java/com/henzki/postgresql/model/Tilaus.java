@@ -15,6 +15,9 @@ public class Tilaus {
     @ManyToOne
     @JoinColumn(name = "asiakas_id", nullable = false)
     private Asiakas asiakas;
+    
+    @Column(nullable = false, insertable = false, updatable = false)
+    private Long asiakas_id;
 
     @Column(name = "tilauspaiva", nullable = false)
     private LocalDate tilauspaiva;
@@ -76,5 +79,16 @@ public class Tilaus {
 	public void setTila(String tila) {
 		this.tila = tila;
 	}
+	
+	public Long getAsiakas_id() {
+        if (asiakas != null) {
+            return asiakas.getId();
+        }
+        return null;
+    }
+	
+	public void setAsiakas_id(Long asiakas_id) {
+        this.asiakas_id = asiakas_id;
+    }
     
 }
